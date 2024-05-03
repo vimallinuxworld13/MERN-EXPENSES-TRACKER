@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const userRouter = require("./routes/userRouter");
 const errorHandler = require("./middlewares/errorHandlerMiddleware");
 const categoryRouter = require("./routes/categoryRouter");
+const transactionRouter = require("./routes/transactionRouter");
 
 const app = express();
 
@@ -19,6 +20,9 @@ app.use(express.json()); //? pass incoming json data
 app.use("/", userRouter);
 
 app.use("/", categoryRouter);
+
+
+app.use("/", transactionRouter);
 //! Error
 app.use(errorHandler);
 
