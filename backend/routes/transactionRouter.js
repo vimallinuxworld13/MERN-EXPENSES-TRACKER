@@ -20,5 +20,13 @@ transactionRouter.get(
 );
 
 
+//!getFilteredTransactions
+transactionRouter.get(
+    '/api/v1/transactions/lists_filter', 
+    isAuthenticated,
+    transactionController.getFilteredTransactions
+);
+
+
 module.exports = transactionRouter;
 

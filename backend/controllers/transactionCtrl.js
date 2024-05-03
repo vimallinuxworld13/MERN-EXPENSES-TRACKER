@@ -23,23 +23,55 @@ const transactionController = {
         
     }), 
 
+    //! Lists
+    lists: asyncHandler(async (req,res)=> {
+            const transactions = await Transaction.find(
+                {user: req.user}
+            );
 
-    //!lists
-    lists: asyncHandler(async(req, res) => {
+            res.json(transactions);
 
-       const transactions = await Transaction.find({
-            user: req.user,
-       });
+    }),
 
+    //! List Filtered Transactions
+    getFilteredTransactions: asyncHandler(async(req, res) => {
+       const {startDate, endDate, type, category } = req.query;
+       console.log(req.query);
+       
+       let filters = { user: req.user };
+       
+
+       if(startDate){
+            filters.date = { ...filters.date, $gte: new Date(startDate)};
+        }
+
+        if(endDate){
+            filters.date = { ...filters.date, $lte: new Date(endDate)};
+        }
+        
+        if(type){
+            filters.type = type;
+        }
+
+        if(category){
+            if(category === 'All'){
+                //! No category filter needed when filtering for 'ALL'
+            } else if (category === 'Uncategorized'){
+                filters.category = 'Uncategorized';
+            } else {
+                filters.category = category;
+            }
+        }
+
+        const transactions = await Transaction.find(filters).sort({
+            date: -1,
+        })
        res.json(transactions);
 
-         
     }),
 
     //!update
-    update: asyncHandler(async (req,res)=> {
-       
-    }),
+    update: asyncHandler(async (req,res)=> {}),
 
     //! delete
     delete: asyncHandler(async (req,res)=> {})
